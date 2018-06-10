@@ -1,0 +1,15 @@
+mixin productFormDelete(product = {})
+  form(action=`/delete/${product._id || ''}` method="GET" class="card" enctype="multipart/form-data")
+    p Article Name
+    p #{product.name}
+    p Price: $ #{product.price}
+    label(for="description") Description
+    p #{product.description}
+    //- Image upload
+    label(for="photo")
+      if product.photo
+        img(src=`/uploads/${product.photo}`, alt=product.name width=200)
+    //pre= h.dump(product)
+    p Are you sure that you want to delete the article #{product.name}???????
+    input(type="submit" value="Yes, delete →" class="button")
+    a.back(href="/products") No, go back to products page.

@@ -1,0 +1,8 @@
+extends layout
+
+include mixins/_productFormDelete
+
+block content
+  .inner
+    h2= title
+    +productFormDelete(product)

@@ -1,0 +1,31 @@
+mixin productForm(product = {})
+  form(action=`/add/${product._id || ''}` method="POST" class="card" enctype="multipart/form-data")
+    label(for="name") Article Name
+    input(type="text" name="name" value=product.name)
+    label(for="price") Price $
+    input(type="number" name="price" value=product.price)
+    label(for="description") Description
+    textarea(name="description")= product.description
+    //- Image upload
+    label(for="photo") Photo
+      input(type="file" name="photo" id="photo" accept="image/gif, image/png, image/jpg")
+      if product.photo
+        img(src=`/uploads/${product.photo}`, alt=product.name width=200)
+    //- address, lng and lat
+    label(for="address") Address
+    input(type="text" id="address" name="location[address]" value=(product.location && product.location.address))
+    label(for="lng") Address Lng
+    input(type="text" id="lng" name="location[coordinates][0]" value=(product.location && product.location.coordinates[0]) required)
+    label(for="lng") Address Lat
+    input(type="text" id="lat" name="location[coordinates][1]" value=(product.location && product.location.coordinates[1]) required)
+    //pre= h.dump(product)
+
+    - const choices = ['Technology', 'Clothes','Books', 'Furniture', 'Antique', 'Sports','Mobile', 'Toys', 'For kids', 'Outdoors', 'Office', 'Relax', 'Jewels']
+    - const tags = product.tags || []
+    ul.tags
+      each choice in choices
+        .tag.tag__choice
+          input(type="checkbox" id=choice value=choice name="tags" checked=(tags.includes(choice)))
+          label(for=choice) #{choice}
+    input(type="submit" value="Save →" class="button")
+

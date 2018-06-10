@@ -1,0 +1,32 @@
+mixin productCard(product = {})
+    .store
+      .store__hero
+        .store__actions
+          if user
+            .store__action.store__action--heart
+              form.heart(method="POST" action=`/api/products/${product._id}/heart`)
+                - const heartStrings = user.hearts.map(obj => obj.toString())
+                - const heartClass = heartStrings.includes(product._id.toString()) ? 'heart__button--hearted' : ''
+                button.heart__button(type="submit" name="heart" class=heartClass)
+                  != h.icon('heart')
+          if user  && product.seller.equals(user._id)
+            //-.store__action.store__action--edit
+            //-a(href=`/products/${product._id}/delete`)
+                != h.icon('delete')
+            .store__action.store__action--edit
+              a(href=`/products/${product._id}/edit`)
+                != h.icon('pencil')
+
+        img(src=`/uploads/${product.photo || 'store.jpg'}`)
+        h2.title
+          a(href=`/product/${product.slug}`) #{product.name}
+      .store__details
+        p= product.description.split(' ').slice(0, 25).join(' ')
+      .store__details.store__price
+        p= `Price: $ ${product.price}`
+      if user  && product.seller.equals(user._id)
+        .store__details__delete
+          a(href=`/products/${product._id}/delete`) Delete
+
+
+
